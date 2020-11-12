@@ -34,8 +34,9 @@ async function replyStatus(message) {
         embed.setTitle('Minecraft Server')
         embed.addField('Host/IP', res.host, true)
         embed.addField('Description', res.description.descriptionText)
+        console.log(res.onlinePlayers)
         embed.addField('Version', res.version, true)
-        if (res.samplePlayers.length === 0) {
+        if (res.onlinePlayers === 0) {
             embed.addField('Players', 'No one is playing')
         } else {
             embed.addField('Players', res.samplePlayers.map(p => p.name).join('\n').substr(0, 1024))
