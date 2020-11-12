@@ -15,23 +15,26 @@ client.on('ready', async () => {
     client.setInterval(getServerStatus, pingFrequency);
 });
 
-
 client.on('message', message => {
     if (message.content.trim() == config.prefix + 'status') {
-        replyStatus(message);
+        return replyStatus(message);
     }
 });
 
-function replyStatus(message) {
+async function replyStatus(message) {
     util.status(config.host, {
         port: config.port
-    }).then(res => {
+    }).then(async res => {
         const embed = new Discord.MessageEmbed()
-            .setColor(0x2EAAD3)
-            .setTitle('Minecraft Server')
-            .addField('Host/IP', res.host, true)
-            .addField('Description', res.description.descriptionText)
-            .addField('Version', res.version, true)
+        if (message.guild.me.roles.highest.color === 0) {
+            embed.setColor(0x2EAAD3)
+        } else {
+            embed.setColor(message.guild.me.roles.highest.color)
+        }
+        embed.setTitle('Minecraft Server')
+        embed.addField('Host/IP', res.host, true)
+        embed.addField('Description', res.description.descriptionText)
+        embed.addField('Version', res.version, true)
         if (res.samplePlayers.length === 0) {
             embed.addField('Players', 'No one is playing')
         } else {
@@ -39,19 +42,14 @@ function replyStatus(message) {
         }
         embed.setTimestamp();
 
-        message.channel.send(embed);
-    }).catch(err => {
+        return message.channel.send(embed);
+    }).catch(async err => {
         return message.channel.send('Error getting Minecraft server status...');
     });
 }
 
-function getDate() {
-    date = new Date();
-    cleanDate = date.toLocaleTimeString();
-}
-
-function getServerStatus() {
-    mcping(config.host, config.port, function (err, res) {
+async function getServerStatus() {
+    mcping(config.host, config.port, async function (err, res) {
         let serverStatus = '';
         if (!(typeof err === 'undefined' || err === null)) {
             client.user.setStatus('dnd');
@@ -61,8 +59,6 @@ function getServerStatus() {
             client.user.setActivity(serverStatus, {
                 type: 'PLAYING'
             });
-
-            return getDate();
         }
         if (typeof res.players.sample === 'undefined') {
             client.user.setStatus('idle');
@@ -72,8 +68,6 @@ function getServerStatus() {
         }
 
         serverStatus = 'Players: ' + res.players.online + ' / ' + res.players.max + ' | ' + config.prefix + 'status';
-
-        getDate();
 
         client.user.setActivity(serverStatus, {
             type: 'PLAYING'
