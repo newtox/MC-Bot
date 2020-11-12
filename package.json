@@ -1,0 +1,17 @@
+{
+  "name": "mc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "discord.js": "^12.4.1",
+    "mc-ping-updated": "^0.1.1",
+    "minecraft-server-util": "^3.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
