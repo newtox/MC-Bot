@@ -3,7 +3,7 @@
 
 ## Installation
 
-1. First you should replace the placeholders in the `config.js` file with your items.  e.g token, ownerID etc.
+1. First you should replace the placeholders in the `config.js` file with your items.  e.g token, prefix etc.
 ```javascript
 const token = 'YOUR TOKEN';
 const prefix = 'YOUR PREFIX';
