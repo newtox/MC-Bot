@@ -23,7 +23,7 @@ client.on('message', message => {
 
 async function replyStatus(message) {
     util.status(config.host, {
-        port: config.port
+        port: config.portNumber
     }).then(async res => {
         const embed = new Discord.MessageEmbed()
         if (message.guild.me.roles.highest.color === 0) {
